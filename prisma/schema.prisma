@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  username   String   @unique
+  password   String
+  avatarUrl  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Feedback Feedback[]
+
+  feedbackUpvotes Feedback[]   @relation("FeedbackUpvotes")
+  Comment         Comment[]
+  SubComment      SubComment[]
+}
+
+model Feedback {
+  id       Int              @id @default(autoincrement())
+  title    String
+  category FeedBackCategory
+  detail   String
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  upvotes User[]    @relation("FeedbackUpvotes")
+  Comment Comment[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  message String
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  feedbackId Int
+  feedback   Feedback @relation(fields: [feedbackId], references: [id])
+
+  SubComment SubComment[]
+}
+
+model SubComment {
+  id      Int    @id @default(autoincrement())
+  message String
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  commentId Int
+  comment   Comment @relation(fields: [commentId], references: [id])
+}
+
+enum FeedBackCategory {
+  UI
+  UX
+  Bug
+  Enchancement
+  Feature
+}
