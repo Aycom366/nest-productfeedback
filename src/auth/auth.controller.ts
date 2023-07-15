@@ -1,13 +1,24 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ForgotPasswordDto,
   LogoutDto,
   ResetPasswordDto,
   SignInDto,
   SignUpDto,
+  UserResponse,
   VerifyEmailDto,
 } from 'src/dto/auth.dto';
 import { AuthService } from './auth.service';
+import { AuthGuard } from 'src/guards/auth.guards';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +33,12 @@ export class AuthController {
   @Post('/verify-email-code')
   async verifyEmailCode(@Body() body: VerifyEmailDto) {
     return this.authService.verifyEmailCode(body);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/me')
+  async me(@Request() req) {
+    return new UserResponse(req.user);
   }
 
   @HttpCode(200)

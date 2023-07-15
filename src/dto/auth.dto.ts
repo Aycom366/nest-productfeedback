@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   IsEmail,
   IsInt,
@@ -22,6 +23,39 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class UserResponse {
+  id: number;
+  email: string;
+  userName: string;
+  name: string;
+
+  @Exclude()
+  password: string;
+
+  avatarUrl: string;
+  created_at: Date;
+  updated_at: Date;
+
+  @Exclude()
+  verified: boolean;
+
+  @Exclude()
+  verificationToken: string | null;
+
+  @Exclude()
+  passwordToken: null | string;
+
+  @Exclude()
+  passwordTokenExpirationDate: null | string;
+
+  @Exclude()
+  loginToken: string;
+
+  constructor(partial: Partial<UserResponse>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class SignInDto {

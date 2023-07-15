@@ -45,7 +45,7 @@ export class AuthService {
 
     const token = await this.jwtService.signAsync(payload);
 
-    this.prismaService.user.update({
+    await this.prismaService.user.update({
       where: { email },
       data: {
         loginToken: token,
@@ -113,7 +113,7 @@ export class AuthService {
   async logout({ email }: Pick<AuthParams, 'email'>) {
     const user = await this.prismaService.user.findUnique({ where: { email } });
     if (user) {
-      this.prismaService.user.update({
+      await this.prismaService.user.update({
         where: { email },
         data: { loginToken: null },
       });
