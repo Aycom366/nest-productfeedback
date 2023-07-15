@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class SignUpDto {
   @IsString()
@@ -11,6 +18,10 @@ export class SignUpDto {
 
   @IsEmail()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class SignInDto {
@@ -26,12 +37,17 @@ export class VerifyEmailDto {
   @IsEmail()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  verificationToken: string;
+  @IsNumber()
+  @IsPositive()
+  verificationToken: number;
 }
 
 export class ForgotPasswordDto {
+  @IsEmail()
+  email: string;
+}
+
+export class LogoutDto {
   @IsEmail()
   email: string;
 }
@@ -44,7 +60,7 @@ export class ResetPasswordDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
-  @IsNotEmpty()
-  passwordToken: string;
+  @IsInt()
+  @IsPositive()
+  passwordToken: number;
 }

@@ -11,17 +11,23 @@ datasource db {
 }
 
 model User {
-  id                          Int      @id @default(autoincrement())
-  email                       String   @unique
-  username                    String   @unique
+  id                          Int       @id @default(autoincrement())
+  email                       String    @unique
+  userName                    String    @unique
+  name                        String
   password                    String
-  avatarUrl                   String
-  created_at                  DateTime @default(now())
-  updated_at                  DateTime @updatedAt
-  verified                    Boolean
-  verificationToken           String
-  passwordToken               String
-  passwordTokenExpirationDate DateTime
+  avatarUrl                   String?
+  created_at                  DateTime  @default(now())
+  updated_at                  DateTime  @updatedAt
+  verified                    Boolean?
+  verificationToken           Int?
+  passwordToken               Int?
+  passwordTokenExpirationDate DateTime?
+
+  //This will be used to store tokens of users after they've logged in
+  //The token will be null after they send a logout request
+  //This is strictly for security purposes
+  loginToken String?
 
   Feedback Feedback[]
 
