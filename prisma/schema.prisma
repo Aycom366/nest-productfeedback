@@ -31,9 +31,8 @@ model User {
 
   Feedback Feedback[]
 
-  feedbackUpvotes Feedback[]   @relation("FeedbackUpvotes")
-  Comment         Comment[]
-  SubComment      SubComment[]
+  Comment    Comment[]
+  SubComment SubComment[]
 }
 
 model Feedback {
@@ -43,9 +42,12 @@ model Feedback {
   detail   String
 
   userId Int
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  upvotes User[]    @relation("FeedbackUpvotes")
+  upvotes Int[] @default([])
+
+  roadMap RoadMap @default(InProgress)
+
   Comment Comment[]
 }
 
@@ -54,10 +56,10 @@ model Comment {
   message String
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   feedbackId Int
-  feedback   Feedback @relation(fields: [feedbackId], references: [id])
+  feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
 
   SubComment SubComment[]
 }
@@ -67,10 +69,10 @@ model SubComment {
   message String
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   commentId Int
-  comment   Comment @relation(fields: [commentId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 enum FeedBackCategory {
@@ -79,4 +81,10 @@ enum FeedBackCategory {
   Bug
   Enchancement
   Feature
+}
+
+enum RoadMap {
+  Planned
+  InProgress
+  Live
 }

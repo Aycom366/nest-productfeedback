@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { MailingModule } from './mailing/mailing.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { FeedbackModule } from './feedback/feedback.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       },
     }),
+    FeedbackModule,
+    CommentModule,
   ],
   providers: [
     {
