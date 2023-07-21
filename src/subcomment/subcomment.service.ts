@@ -25,6 +25,10 @@ export class SubcommentService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createSubcomment(body: SubcommentParams, userId: number) {
+    const doesCommentExist = await this.prismaService.comment.findUnique({
+      where: { id: body.commentId },
+    });
+    if (!doesCommentExist) throw new NotFoundException('Comment not found');
     const subComment = await this.prismaService.subComment.create({
       data: {
         message: body.message,

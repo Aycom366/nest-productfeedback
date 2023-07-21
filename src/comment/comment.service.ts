@@ -25,6 +25,10 @@ export class CommentService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createComment(body: CommentParams, userId: number) {
+    const doesFeedbackExist = await this.prismaService.feedback.findUnique({
+      where: { id: body.feedBackId },
+    });
+    if (!doesFeedbackExist) throw new NotFoundException('Feedback not found');
     const comment = await this.prismaService.comment.create({
       data: {
         message: body.message,
@@ -72,7 +76,7 @@ export class CommentService {
     const comment = await this.prismaService.comment.findUnique({
       where: { id: commentId },
     });
-    if (!comment) throw new NotFoundException();
+    if (!comment) throw new NotFoundException('Comment not found');
 
     if (comment.ownerId !== userId) throw new ForbiddenException();
 

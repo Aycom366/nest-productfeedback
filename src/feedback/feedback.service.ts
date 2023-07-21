@@ -56,6 +56,10 @@ export class FeedbackService {
   }
 
   async handleUpVote({ feedBackId }: { feedBackId: number }, userId: number) {
+    const doesFeedbackExist = await this.prismaService.feedback.findUnique({
+      where: { id: feedBackId },
+    });
+    if (!doesFeedbackExist) throw new NotFoundException();
     const feedback = await this.prismaService.feedback.findUnique({
       where: {
         id: feedBackId,

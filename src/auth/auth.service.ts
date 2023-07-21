@@ -94,7 +94,7 @@ export class AuthService {
     const doesEmailExist = await this.prismaService.user.findUnique({
       where: { email: body.email },
     });
-    if (!doesEmailExist) throw new NotFoundException();
+    if (!doesEmailExist) throw new NotFoundException('Email not found');
 
     if (doesEmailExist.verificationToken != body.verificationToken)
       throw new BadRequestException('Invalid Token');
