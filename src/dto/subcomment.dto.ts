@@ -6,24 +6,19 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateCommentDto {
+export class CreateSubcommentDto {
   @IsString()
   @IsNotEmpty()
   message: string;
 
   @IsNumber()
   @IsPositive()
-  feedBackId: number;
+  commentId: number;
 }
 
-export class UpdateCommentDto {
+export class UpdateSubcommentDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   message: string;
-
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  feedbackId: number;
 }

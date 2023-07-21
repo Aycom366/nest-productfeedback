@@ -29,7 +29,7 @@ export class AuthService {
 
   async signIn({ email, password }: Pick<AuthParams, 'email' | 'password'>) {
     const user = await this.prismaService.user.findUnique({ where: { email } });
-    if (!email) throw new BadRequestException('Invalid Credentials');
+    if (!user) throw new BadRequestException('Invalid Credentials');
 
     const doesPasswordMatch = await bycryptjs.compare(password, user.password);
     if (!doesPasswordMatch)

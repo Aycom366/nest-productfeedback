@@ -11,7 +11,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from 'src/dto/comment.dts';
+import { CreateCommentDto, UpdateCommentDto } from 'src/dto/comment.dto';
 
 @Controller('comment')
 export class CommentController {
@@ -29,7 +29,7 @@ export class CommentController {
 
   @Patch(':commentId')
   updateComment(
-    @Body() body: CreateCommentDto,
+    @Body() body: UpdateCommentDto,
     @Req() request,
     @Param('commentId', ParseIntPipe) commentId: number,
   ) {
@@ -37,7 +37,7 @@ export class CommentController {
   }
 
   @HttpCode(204)
-  @Delete(':feedbackId/:commentId')
+  @Delete(':commentId')
   deleteComment(
     @Req() request,
     @Param('commentId', ParseIntPipe) commentId: number,

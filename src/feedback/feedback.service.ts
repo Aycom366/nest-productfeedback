@@ -22,7 +22,7 @@ export const userToReturn = {
   id: true,
 };
 
-const feedBackReturnValue = {
+export const feedBackReturnValue = {
   category: true,
   detail: true,
   title: true,
@@ -169,7 +169,7 @@ export class FeedbackService {
     });
     if (!feedback) throw new NotFoundException('Feedback not found');
 
-    this.authorizePermissiononFeedback(feedback.userId, currentLoginUserId);
+    if (feedback.userId !== currentLoginUserId) throw new ForbiddenException();
 
     return await this.prismaService.feedback.update({
       where: { id },
@@ -189,14 +189,9 @@ export class FeedbackService {
     });
     if (!feedback) throw new NotFoundException('Feedback not found');
 
-    this.authorizePermissiononFeedback(feedback.userId, currentLoginUserId);
+    if (feedback.userId !== currentLoginUserId) throw new ForbiddenException();
 
     await this.prismaService.feedback.delete({ where: { id } });
     return;
-  }
-
-  async authorizePermissiononFeedback(ownerId: number, currentUserId: number) {
-    if (ownerId !== currentUserId) throw new ForbiddenException();
-    return true;
   }
 }

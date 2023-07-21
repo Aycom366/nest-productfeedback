@@ -8,6 +8,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { FeedbackModule } from './feedback/feedback.module';
 import { CommentModule } from './comment/comment.module';
+import { SubcommentModule } from './subcomment/subcomment.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CommentModule } from './comment/comment.module';
     }),
     FeedbackModule,
     CommentModule,
+    SubcommentModule,
   ],
   providers: [
     {
