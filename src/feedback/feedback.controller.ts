@@ -20,13 +20,14 @@ import { FeedbackService } from './feedback.service';
 import { FeedBackCategory } from '@prisma/client';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
-const feedbackResponse = {
+export const feedbackResponse = {
   category: 'UI',
   detail: 'You look takeaway',
   title: 'Another Banger',
@@ -39,7 +40,7 @@ const feedbackResponse = {
   },
   upvotes: [],
   Comment: [],
-};
+} as const;
 
 @ApiBearerAuth('Bearer')
 @ApiTags('Feedback')
@@ -231,7 +232,7 @@ export class FeedbackController {
       },
     },
   })
-  @ApiNotFoundResponse({
+  @ApiForbiddenResponse({
     schema: {
       example: {
         message: 'Forbidden',

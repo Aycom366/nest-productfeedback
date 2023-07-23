@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FeedbackService, feedBackReturnValue } from './feedback.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { mockCreateResponseType, mockGetFeedbacks } from './mockData';
+import { NotFoundException } from '@nestjs/common';
 
 describe('FeedbackService', () => {
   let service: FeedbackService;
@@ -13,13 +14,11 @@ describe('FeedbackService', () => {
         FeedbackService,
         {
           provide: PrismaService,
-          //trying to mock what prisma will return
           useValue: {
             feedback: {
-              //mocking findMany
               findMany: jest.fn().mockReturnValue(mockGetFeedbacks),
-              //mocking create feedback
               create: jest.fn().mockReturnValue(mockCreateResponseType),
+              findUnique: jest.fn(),
             },
           },
         },
@@ -86,6 +85,18 @@ describe('FeedbackService', () => {
           },
         },
       });
+    });
+  });
+
+  describe('getFeedback', () => {
+    it('should throw NotFoundException when invalid ID is provided', async () => {
+      jest
+        .spyOn(prismaService.feedback, 'findUnique')
+        .mockReturnValueOnce(null);
+
+      await expect(service.getFeedback(2)).rejects.toThrowError(
+        NotFoundException,
+      );
     });
   });
 });
