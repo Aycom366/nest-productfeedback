@@ -9,6 +9,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { FeedbackModule } from './feedback/feedback.module';
 import { CommentModule } from './comment/comment.module';
 import { SubcommentModule } from './subcomment/subcomment.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -38,5 +39,6 @@ import { SubcommentModule } from './subcomment/subcomment.module';
       useClass: ClassSerializerInterceptor,
     },
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
